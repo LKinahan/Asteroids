@@ -1,0 +1,57 @@
+////////////////////////////////////////////////////////////////
+// CGameObject.cpp for ELEX 4618
+// Member function definitions for class CGameObject that 
+//     define objects within mini games
+// Created March 02, 2021 by Laurel Kinahan 
+////////////////////////////////////////////////////////////////
+#include "stdafx.h"
+#include "CGameObject.h"
+
+////////////////////////////////////////////////////////////////
+// Class move
+////////////////////////////////////////////////////////////////
+void CGameObject::move()
+	{
+	current_time = cv::getTickCount();
+	delta_time = (current_time - prev_time) / cv::getTickFrequency();
+	prev_time = current_time;
+	set_pos(cv::Point2f(get_pos() + velocity * delta_time));
+	}
+
+////////////////////////////////////////////////////////////////
+// Class collide
+////////////////////////////////////////////////////////////////
+bool CGameObject::collide(CGameObject& obj)
+	{
+	if ((position.x - obj.position.x) * (position.x - obj.position.x) + (position.y - obj.position.y) * (position.y - obj.position.y) < (_radius + obj._radius) * (_radius + obj._radius))
+		return true;
+	else
+		return false;
+	}
+
+////////////////////////////////////////////////////////////////
+// Class collide_wall
+////////////////////////////////////////////////////////////////
+bool CGameObject::collide_wall(cv::Size board)
+	{
+	if (position.x - _radius > board.width || position.x + _radius < 0 || position.y - _radius > board.height || position.y + _radius < 0)
+		return true;
+	else
+		return false;
+	}
+
+////////////////////////////////////////////////////////////////
+// Class hit
+////////////////////////////////////////////////////////////////
+void CGameObject::hit()
+	{
+	set_lives(_lives - 1);
+	}
+
+////////////////////////////////////////////////////////////////
+// Class draw
+////////////////////////////////////////////////////////////////
+void CGameObject::draw(cv::Mat& im)
+	{
+	
+	}
